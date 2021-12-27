@@ -52,12 +52,12 @@ class TestUserUpdateView:
             reverse("users:update"), form_data
         )
         request.user = user
-        session_middleware = SessionMiddleware()
-        session_middleware.process_request(request)
-        msg_middleware = MessageMiddleware()
-        msg_middleware.process_request(request)
 
         response = UserUpdateView.as_view()(request)
+        session_middleware = SessionMiddleware(response)
+        session_middleware.process_request(request)
+        msg_middleware = MessageMiddleware(response)
+        msg_middleware.process_request(request)
         user.refresh_from_db()
 
         assert response.status_code == 302
