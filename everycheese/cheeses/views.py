@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Cheese
 
@@ -13,7 +14,7 @@ class CheeseDetailView(DetailView):
     model = Cheese
 
 
-class CheeseCreateView(CreateView):
+class CheeseCreateView(LoginRequiredMixin, CreateView):
     """View of Create Cheese"""
     model = Cheese
     fields = ['name', 'description', 'firmness', 'country_of_origin']
